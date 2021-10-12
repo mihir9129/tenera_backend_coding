@@ -7,4 +7,5 @@ public class CurrentWeatherInformation {
     private double temperatureInCelsius;
     private int pressureInHpa;
     private boolean isUmbrellaRequired;
+    private String cityName;
 }

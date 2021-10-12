@@ -42,6 +42,10 @@ public class HistoricalInformationEntity extends BaseEntity {
     @Column(name = "is_umbrella_required")
     private boolean isUmbrellaRequired;
 
+    public boolean getIsUmbrellaRequired(){
+        return this.isUmbrellaRequired;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
