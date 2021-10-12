@@ -28,7 +28,9 @@ Steps to start the application:
 
 Once the application is started, it would automatically start with the port number 8080.
 We would be able to access all the apis by using the swagger-ui using the URL - 
-http://localhost:8080/swagger-ui.html
+http://localhost:8080/swagger-ui.html.
+The reason for creating a swagger ui is the ease to access the APIs present in the application, and get all the 
+APIs in the same file.
 
 The Apis are as follows:
 1. GET - http://localhost:8080/api/v1/weather-information/current?location={cityName}
