@@ -4,12 +4,13 @@ import com.tenera.challenge.cityweatherinformation.response.CurrentWeatherInform
 import com.tenera.challenge.cityweatherinformation.response.HistoricalWeatherInformation;
 import com.tenera.challenge.cityweatherinformation.response.Weather;
 import com.tenera.challenge.cityweatherinformation.serviceimpl.CityWeatherInformationServiceImpl;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Currency;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,12 +22,17 @@ class CityWeatherInformationUnitTests {
     CityWeatherInformationServiceImpl cityWeatherInformationServiceImpl;
 
     @Test
+    @DisplayName("temperature calculation check")
     void checkTemperature(){
         double outputTemp = cityWeatherInformationServiceImpl.convertTempToCelsius(273.15d);
         assertEquals(0.0d,outputTemp);
+
+        double outTemp1 = cityWeatherInformationServiceImpl.convertTempToCelsius(300.0d);
+        assertEquals(26.850000000000023d, outTemp1);
     }
 
     @Test
+    @DisplayName("Umbrella validation check")
     void checkUmbrellaRequired(){
         List<Weather> weatherList1 = getWeatherList1();
         boolean umbrellaRequired = cityWeatherInformationServiceImpl.isUmbrellaRequired(weatherList1);
@@ -46,35 +52,36 @@ class CityWeatherInformationUnitTests {
     }
 
     @Test
+    @DisplayName("current weather information service test")
     void testCurrentWeatherInformation(){
         CurrentWeatherInformation currentWeatherInformation = cityWeatherInformationServiceImpl.getCurrentWeatherInformation("berlin");
         assertNotNull(currentWeatherInformation);
         assertNotNull(currentWeatherInformation.getCityName());
         assertEquals("Berlin",currentWeatherInformation.getCityName());
-        assertNotNull(currentWeatherInformation.getTemperatureInCelsius());
     }
 
     @Test
+    @DisplayName("historical weather information service test")
     void testHistoryWeatherInformation(){
         testCurrentWeatherInformation();
         HistoricalWeatherInformation historicalWeatherInformation = cityWeatherInformationServiceImpl.getHistoricalWeatherInformation("berlin");
         assertNotNull(historicalWeatherInformation);
-        assertNotNull(historicalWeatherInformation.getAverageTempInCelsius());
-        assertNotNull(historicalWeatherInformation.getAveragePressureInHpa());
         assertEquals("Berlin",historicalWeatherInformation.getHistory().get(0).getCityName());
         assertNotNull(historicalWeatherInformation.getHistory());
     }
 
     @Test
+    @DisplayName("average temperature calculation test")
     void testAverageTempInCelsius(){
-        CurrentWeatherInformation currentWeatherInformationLondon = cityWeatherInformationServiceImpl.getCurrentWeatherInformation("london");
-        CurrentWeatherInformation currentWeatherInformationBerlin = cityWeatherInformationServiceImpl.getCurrentWeatherInformation("berlin");
+        CurrentWeatherInformation currentWeatherInformationLondon = cityWeatherInformationServiceImpl.getCurrentWeatherInformation("baroda");
+        CurrentWeatherInformation currentWeatherInformationBerlin = cityWeatherInformationServiceImpl.getCurrentWeatherInformation("ahmedabad");
         List<CurrentWeatherInformation> currentWeatherInformationList = Arrays.asList(currentWeatherInformationBerlin,currentWeatherInformationLondon);
         double averageTemp = cityWeatherInformationServiceImpl.getAverageTemperature(currentWeatherInformationList);
-        assertNotNull(averageTemp);
+        assertTrue(averageTemp > 0.0d);
     }
 
     @Test
+    @DisplayName("average pressure calculation test")
     void testAveragePressure(){
         CurrentWeatherInformation currentWeatherInformationLondon = cityWeatherInformationServiceImpl.getCurrentWeatherInformation("london");
         CurrentWeatherInformation currentWeatherInformationBerlin = cityWeatherInformationServiceImpl.getCurrentWeatherInformation("berlin");
